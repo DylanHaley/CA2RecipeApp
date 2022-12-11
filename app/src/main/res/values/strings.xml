@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">recipe</string>
+    <string name="button_addRecipe">Add Recipe</string>
+    <string name="hint_recipeTitle">Recipe Title</string>
+    <string name="hint_recipeDescription">Description </string>
+    <string name="menu_addRecipe">Add</string>
+    <string name="menu_cancelRecipe">Cancel</string>
+    <string name="enter_recipe_title"> Please enter a Recipe Title </string>
+    <string name="save_recipe"> Save Recipe </string>
+    <string name="button_addImage"> Add Image </string>
+    <string name="select_recipe_image">Select Recipe image</string>
+    <string name="change_recipe_image">Change Recipe image</string>
+    <string name="button_location">Set Location</string>
+    <string name="title_activity_map">Map</string>
+</resources>
