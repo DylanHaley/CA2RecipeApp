@@ -20,7 +20,6 @@
     <string name="recipe_image_placeholder">Recipe Image</string>
     <string name="recipe_name_placeholder">Recipe Name</string>
     <string name="recipe_description_placeholder">Recipe Description</string>
-    <string name="button_recipes">Recipes</string>
     <string name="button_settings">Settings</string>
     <string name="button_choose_theme">Choose Theme</string>
     <string name="choose_theme">Choose Theme</string>

@@ -9,18 +9,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.setu.recipeApp.R
-import org.setu.recipeApp.adapters.RecipeAdapter
 import org.setu.recipeApp.adapters.RecipeListener
 import org.setu.recipeApp.databinding.ActivityRecipeListBinding
 import org.setu.recipeApp.main.MainApp
 import org.setu.recipeApp.models.RecipeModel
+import org.setu.recipeApp.adapters.RecipeAdapter
 
-class RecipeListActivity : AppCompatActivity(),
-    RecipeListener/*, MultiplePermissionsListener*/ {
-
+class RecipeListActivity : AppCompatActivity(), RecipeListener/*, MultiplePermissionsListener*/  {
     lateinit var app: MainApp
     private lateinit var binding: ActivityRecipeListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +33,9 @@ class RecipeListActivity : AppCompatActivity(),
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
 
-        loadRecipes()
+        loadRecipe()
         registerRefreshCallback()
+        registerMapCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -48,6 +48,10 @@ class RecipeListActivity : AppCompatActivity(),
             R.id.item_add -> {
                 val launcherIntent = Intent(this, RecipeActivity::class.java)
                 refreshIntentLauncher.launch(launcherIntent)
+            }
+            R.id.item_map -> {
+                val launcherIntent = Intent(this, RecipeMapsActivity::class.java)
+                mapIntentLauncher.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -62,16 +66,21 @@ class RecipeListActivity : AppCompatActivity(),
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { loadRecipes() }
+            { loadRecipe() }
     }
 
-    private fun loadRecipes() {
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            {  }
+    }
+
+    private fun loadRecipe() {
         showRecipes(app.recipes.findAll())
     }
 
-    fun showRecipes (recipes: List<RecipeModel>) {
+    private fun showRecipes (recipes: List<RecipeModel>) {
         binding.recyclerView.adapter = RecipeAdapter(recipes, this)
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
-
 }

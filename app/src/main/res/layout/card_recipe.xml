@@ -15,7 +15,7 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/imageIcon"
+            android:id="@+id/recipeImage"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_marginTop="4dp"
@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/recipeTitle"
+            android:id="@+id/recipeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -35,20 +35,20 @@
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.048"
-            app:layout_constraintStart_toEndOf="@+id/imageIcon"
+            app:layout_constraintStart_toEndOf="@+id/recipeImage"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="A Title" />
+            tools:text="A Name" />
 
         <TextView
-            android:id="@+id/description"
+            android:id="@+id/recipeDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textAlignment="viewStart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.052"
-            app:layout_constraintStart_toEndOf="@+id/imageIcon"
-            app:layout_constraintTop_toBottomOf="@id/recipeTitle"
+            app:layout_constraintStart_toEndOf="@+id/recipeImage"
+            app:layout_constraintTop_toBottomOf="@id/recipeName"
             tools:text="A Description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

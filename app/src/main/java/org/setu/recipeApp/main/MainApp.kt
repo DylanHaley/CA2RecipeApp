@@ -14,6 +14,6 @@ class MainApp : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         recipes = RecipeJSONStore(applicationContext)
-        i("Recipe started")
+        i("Recipes started")
     }
 }

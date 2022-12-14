@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import org.setu.recipeApp.databinding.ActivityMainBinding
+import org.setu.recipeApp.databinding.CardRecipeBinding
 import org.setu.recipeApp.models.RecipeModel
 
 interface RecipeListener {
@@ -18,7 +18,7 @@ class RecipeAdapter constructor(
     RecyclerView.Adapter<RecipeAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = ActivityMainBinding
+        val binding = CardRecipeBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
         return MainHolder(binding)
@@ -31,17 +31,13 @@ class RecipeAdapter constructor(
 
     override fun getItemCount(): Int = recipes.size
 
-    class MainHolder(private val binding: ActivityMainBinding) :
+    class MainHolder(private val binding: CardRecipeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(recipe: RecipeModel, listener: RecipeListener) {
-            binding.recipeTitle.setText(recipe.title) //recipe.title
-            binding.description.setText(recipe.description) //recipe.description
+            binding.recipeName.text = recipe.name
+            binding.recipeDescription.text = recipe.description
             Picasso.get().load(recipe.image).resize(200,200).into(binding.recipeImage)
-//            Glide.with(binding.root)
-//                .load(recipe.image)
-//                .override(200,200)
-//                .into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onRecipeClick(recipe) }
         }
     }

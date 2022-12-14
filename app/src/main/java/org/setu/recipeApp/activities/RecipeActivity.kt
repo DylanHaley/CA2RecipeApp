@@ -6,12 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DatabaseReference
 import com.squareup.picasso.Picasso
 import org.setu.recipeApp.R
-import org.setu.recipeApp.databinding.ActivityMainBinding
+import org.setu.recipeApp.databinding.ActivityRecipeBinding
 import org.setu.recipeApp.helpers.showImagePicker
 import org.setu.recipeApp.main.MainApp
 import org.setu.recipeApp.models.Location
@@ -20,19 +24,20 @@ import timber.log.Timber.i
 
 class RecipeActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityRecipeBinding
     var recipe = RecipeModel()
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     //var location = Location(52.245696, -7.139102, 15f)
+    var edit = false
+    private lateinit var database: DatabaseReference
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var edit = false
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityRecipeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
@@ -44,22 +49,23 @@ class RecipeActivity : AppCompatActivity() {
         if (intent.hasExtra("recipe_edit")) {
             edit = true
             recipe = intent.extras?.getParcelable("recipe_edit")!!
-            binding.recipeTitle.setText(recipe.title)
-            binding.description.setText(recipe.description)
-            binding.btnAdd.setText(R.string.save_recipe)
+            binding.recipeTitle.setText(recipe.name)
+            binding.recipeDescription.setText(recipe.description)
+            binding.btnAddRecipe.setText(R.string.save_recipe)
             Picasso.get()
                 .load(recipe.image)
                 .into(binding.recipeImage)
             if (recipe.image != Uri.EMPTY) {
-                binding.chooseImage.setText(R.string.change_recipe_image)
+                binding.btnAddImage.setText(R.string.change_recipe_image)
             }
         }
 
-        binding.btnAdd.setOnClickListener() {
-            recipe.title = binding.recipeTitle.text.toString()
-            recipe.description = binding.description.text.toString()
-            if (recipe.title.isEmpty()) {
-                Snackbar.make(it,R.string.enter_recipe_title, Snackbar.LENGTH_LONG)
+        binding.btnAddRecipe.setOnClickListener() {
+            recipe.name = binding.recipeTitle.text.toString()
+            recipe.description = binding.recipeDescription.text.toString()
+            recipe.rating = binding.recipeRating.rating.toDouble()
+            if (recipe.name.isEmpty() && recipe.description.isEmpty() && recipe.rating.isNaN()) {
+                Snackbar.make(it,R.string.enter_all_recipe_details, Snackbar.LENGTH_LONG)
                     .show()
             } else {
                 if (edit) {
@@ -73,11 +79,11 @@ class RecipeActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.chooseImage.setOnClickListener {
+        binding.btnAddImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
         }
 
-        binding.recipeLocation.setOnClickListener {
+        binding.btnAddLocation.setOnClickListener {
             val location = Location(52.245696, -7.139102, 15f)
             if (recipe.zoom != 0f) {
                 location.lat =  recipe.lat
@@ -95,11 +101,16 @@ class RecipeActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_recipe, menu)
+        if (edit) menu.getItem(0).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.item_delete -> {
+                app.recipes.delete(recipe)
+                finish()
+            }
             R.id.item_cancel -> {
                 finish()
             }
@@ -119,7 +130,7 @@ class RecipeActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(recipe.image)
                                 .into(binding.recipeImage)
-                            binding.chooseImage.setText(R.string.change_recipe_image)
+                            binding.btnAddImage.setText(R.string.change_recipe_image)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }

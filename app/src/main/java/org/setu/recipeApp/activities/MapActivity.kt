@@ -2,7 +2,6 @@ package org.setu.recipeApp.activities
 
 import android.app.Activity
 import android.content.Intent
-//import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
