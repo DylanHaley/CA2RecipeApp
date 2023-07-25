@@ -10,6 +10,6 @@
     <item
         android:id="@+id/item_add"
         android:icon="@drawable/ic_add"
-        android:title="@string/menu_addRecipe"
+        android:title="@string/menu_cancelRecipe"
         app:showAsAction="always" />
 </menu>
