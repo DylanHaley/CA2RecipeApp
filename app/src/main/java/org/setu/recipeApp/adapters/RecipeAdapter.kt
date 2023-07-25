@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import org.setu.recipeApp.R
 import org.setu.recipeApp.databinding.CardRecipeBinding
 import org.setu.recipeApp.models.RecipeModel
 
@@ -37,8 +38,22 @@ class RecipeAdapter constructor(
         fun bind(recipe: RecipeModel, listener: RecipeListener) {
             binding.recipeName.text = recipe.name
             binding.recipeDescription.text = recipe.description
-            Picasso.get().load(recipe.image).resize(200,200).into(binding.recipeImage)
+            Picasso.get().load(recipe.image).resize(200, 200).into(binding.recipeImage)
+
+            updateFavoriteButton(recipe)
+
+            binding.favoriteButton.setOnClickListener {
+                recipe.isFavourite = !recipe.isFavourite
+                updateFavoriteButton(recipe)
+            }
+
             binding.root.setOnClickListener { listener.onRecipeClick(recipe) }
+        }
+
+        private fun updateFavoriteButton(recipe: RecipeModel) {
+            val favoriteDrawableRes =
+                if (recipe.isFavourite) R.drawable.ic_favourite else R.drawable.ic_add_favourites
+            binding.favoriteButton.setImageResource(favoriteDrawableRes)
         }
     }
 }
